@@ -1,3 +1,4 @@
+import pandas as pd
 # def print_hi(name):
 #     # Use a breakpoint in the code line below to debug your script.
 #     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
@@ -9,12 +10,10 @@
 
 # a = "750 руб."
 # print(a[:-5])
-def p(a, b):
-    a = a + b
-a = 3
-b = 5
-a = p(a,b)
-print(a)
+df = pd.DataFrame(columns=['name', 'price', 'shop', 'category'])
+_df = pd.DataFrame([['namae[i]', 'price[i]', 'Discomir', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+df = df.append(_df, ignore_index=True)
+print(df)
 # import itertools
 # s = "ABC"
 # com_set = itertools.combinations(s, 2)
