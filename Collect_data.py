@@ -187,19 +187,21 @@ df = pd.read_excel('output.xlsx')
 df.pop('Unnamed: 0')
 namae = []
 price = []
-url = "https://diskomir.ru/catalog/znachki/nabory_znachkov/?from_movie=bananovaya_ryba_banana_fish_rybka_bananka&from_movie=voleybol_haikyu_haikyuu_&from_movie=doktor_stoun_dr_stone_doctor_stone&from_movie=drakon_gornichnaya_kobayashi_kobayashi_san_chi_no_maid_dragon_miss_kobayashi_s_dragon_maid&from_movie=durochka_aho_girl_ahogaru_clueless_girl"
-page = requests.get(url)
-soup = BeautifulSoup(page.text, "html.parser")
-namae = namae + get_n(soup, 'znachok', 'discomir')
-price = price + get_p(soup, 'znachok', 'discomir')
-for i in range(len(namae)):
-    if price[i].isdigit()==True:
-        _df = pd.DataFrame([[namae[i], int(price[i]), 'Discomir', 'Pins']], columns=['name', 'price', 'shop', 'category'])
-        df = df.append(_df, ignore_index=True)
+
+# Discomir (znachki)
+# url = "https://diskomir.ru/catalog/znachki/nabory_znachkov/?from_movie=bananovaya_ryba_banana_fish_rybka_bananka&from_movie=voleybol_haikyu_haikyuu_&from_movie=doktor_stoun_dr_stone_doctor_stone&from_movie=drakon_gornichnaya_kobayashi_kobayashi_san_chi_no_maid_dragon_miss_kobayashi_s_dragon_maid&from_movie=durochka_aho_girl_ahogaru_clueless_girl"
+# page = requests.get(url)
+# soup = BeautifulSoup(page.text, "html.parser")
+# namae = namae + get_n(soup, 'znachok', 'discomir')
+# price = price + get_p(soup, 'znachok', 'discomir')
+# for i in range(len(namae)):
+#     if price[i].isdigit()==True:
+#         _df = pd.DataFrame([[namae[i], int(price[i]), 'Discomir', 'Pins']], columns=['name', 'price', 'shop', 'category'])
+#         df = df.append(_df, ignore_index=True)
 
 # Old collect data
 
-# # Diskomir
+# # Diskomir (manga)
 # url = 'https://diskomir.ru/catalog/manga/manga/?arrFilter_ff%5BNAME%5D=&arrFilter_pf%5BNALICHIE%5D=86&arrFilter_pf%5BFROM_MOVIE%5D=&arrFilter_pf%5BMADE_BY%5D=&set_filter=%CD%E0%E9%F2%E8'
 # page = requests.get(url)
 # soup = BeautifulSoup(page.text, "html.parser")
@@ -221,6 +223,9 @@ for i in range(len(namae)):
 #         df = df.append(_df, ignore_index=True)
 # namae.clear()
 # price.clear()
+
+# Discomir (figurki)
+
 # url = 'https://diskomir.ru/catalog/animefigurki/malenkie_kitayskie_figurki/?arrFilter_ff%5BNAME%5D=&arrFilter_pf%5BNALICHIE%5D=86&arrFilter_pf%5BFROM_MOVIE%5D=&arrFilter_pf%5BMADE_BY%5D=&set_filter=%CD%E0%E9%F2%E8'
 # page = requests.get(url)
 # soup = BeautifulSoup(page.text, "html.parser")
@@ -240,8 +245,8 @@ for i in range(len(namae)):
 #
 # namae.clear()
 # price.clear()
-#
-# # XL (the end 224)
+
+# XL (the end 224) (figurki)
 #
 # for k in range(2, 5):
 #     url = 'https://xlm.ru/nendoroid?by=popular&page='+str(k)
@@ -254,6 +259,9 @@ for i in range(len(namae)):
 #
 # namae.clear()
 # price.clear()
+
+# XL (manga)
+
 # url = 'https://xlm.ru/manga?by=popular'
 # namae = namae + get_n(url, 'manga', 'XL')
 # price = price + get_p(url, 'manga', 'XL')
