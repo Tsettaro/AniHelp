@@ -51,7 +51,21 @@ def get_n(soup, id, shop):
                 lim.append(namae[i])
         driver.quit()
         return lim
-    elif id == 'figure':
+    elif id == 'figure' and shop == 'XL':
+        but = driver.find_elements_by_class_name("button")
+        for e in but:
+            lim.append(e.text)
+        del lim[0]
+        for e in range(len(lim)):
+            if lim[e] != 'Купить':
+                lim_pr.append(e)
+        for n in sorted(lim_pr, reverse=True):
+            del namae[n]
+        but.clear()
+        lim.clear()
+        driver.quit()
+        return namae
+    elif id == 'figure' and shop == 'discomir':
         for i in range(len(namae)):
             if re.findall(r'Копия', namae[i]) or re.findall(r'Pokemon', namae[i]) or re.findall(r'One Piece', namae[i]):
                 lim.append(i)
@@ -138,6 +152,22 @@ def get_p(soup, id, shop):
                 lim_pr.append(pri[i])
         driver.quit()
         return lim_pr
+    elif id == 'figure' and shop == 'XL':
+        but = driver.find_elements_by_class_name("button")
+        for e in but:
+            lim.append(e.text)
+        del lim[0]
+        for e in range(len(lim)):
+            if lim[e] != 'Купить':
+                lim_pr.append(e)
+        for n in sorted(lim_pr, reverse=True):
+            del namae[n]
+            del pri[n]
+        but.clear()
+        lim.clear()
+        lim_pr.clear()
+        driver.quit()
+        return pri
     elif id == 'figure' and shop == 'discomir':
         for i in range(len(namae)):
             if re.findall(r'Копия', namae[i]) or re.findall(r'Pokemon', namae[i]) or re.findall(r'One Piece', namae[i]):
@@ -192,20 +222,19 @@ namae.clear()
 price.clear()
 
 # XL (the end 224)
-for k in range(2, 16):
-    url = 'https://xlm.ru/search?search=%D0%A2%D0%BE%D0%BC+1&page='+str(k)
-    namae = namae + get_n(url, 'manga', 'XL')
-    price = price + get_p(url, 'manga', 'XL')
 
-
+for k in range(2, 5):
+    url = 'https://xlm.ru/nendoroid?by=popular&page='+str(k)
+    namae = namae + get_n(url, 'figure', 'XL')
+    price = price + get_p(url, 'figure', 'XL')
 for i in range(len(namae)):
     if price[i].isdigit() == True:
-        _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+        _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Figure']], columns=['name', 'price', 'shop', 'category'])
         df = df.append(_df, ignore_index=True)
+
 namae.clear()
 price.clear()
-
-url = 'https://xlm.ru/search?search=%D0%A2%D0%BE%D0%BC+1'
+url = 'https://xlm.ru/manga?by=popular'
 namae = namae + get_n(url, 'manga', 'XL')
 price = price + get_p(url, 'manga', 'XL')
 for i in range(len(namae)):
@@ -213,6 +242,18 @@ for i in range(len(namae)):
         _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Manga']], columns=['name', 'price', 'shop', 'category'])
         df = df.append(_df, ignore_index=True)
 
-print(df)
+namae.clear()
+price.clear()
 
+for k in range(2, 19):
+    url = 'https://xlm.ru/manga?by=popular&page='+str(k)
+    namae = namae + get_n(url, 'manga', 'XL')
+    price = price + get_p(url, 'manga', 'XL')
+
+for i in range(len(namae)):
+    if price[i].isdigit() == True:
+        _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+        df = df.append(_df, ignore_index=True)
+
+print(df)
 df.to_excel('output.xlsx')
