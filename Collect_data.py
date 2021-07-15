@@ -201,7 +201,7 @@ price = []
 
 # Old collect data
 
-# # Diskomir (manga)
+# Diskomir (manga)
 # url = 'https://diskomir.ru/catalog/manga/manga/?arrFilter_ff%5BNAME%5D=&arrFilter_pf%5BNALICHIE%5D=86&arrFilter_pf%5BFROM_MOVIE%5D=&arrFilter_pf%5BMADE_BY%5D=&set_filter=%CD%E0%E9%F2%E8'
 # page = requests.get(url)
 # soup = BeautifulSoup(page.text, "html.parser")
