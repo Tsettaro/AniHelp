@@ -12,6 +12,8 @@ def get_n(soup, id, shop):
         driver = webdriver.Firefox(executable_path=r'A:\geckodriver.exe')
         driver.get(soup)
         time.sleep(6)
+    elif shop == 'Nyaki':
+        goods = soup.findAll('div', class_='product-name')
     namae = []
     if shop == 'discomir':
         for data in goods:
@@ -20,6 +22,9 @@ def get_n(soup, id, shop):
         tag_list = driver.find_elements_by_class_name("product-name")
         for e in tag_list:
             namae.append(e.text)
+    elif shop == 'Nyaki':
+        for data in goods:
+            namae.append(data.text)
     lim = []
     lim_pr = []
     if id == 'manga' and shop == 'discomir':
@@ -50,6 +55,13 @@ def get_n(soup, id, shop):
             if re.findall(r'Том 1+$|Книга 1+$|Vol. 1+$|Том 1.+$', namae[i]):
                 lim.append(namae[i])
         driver.quit()
+        return lim
+    elif id == 'manga' and shop == 'Nyaki':
+        for i in range(len(namae)):
+            if re.findall(r'1 том+$|1 книга+$', namae[i]):
+                j = namae[i].find('1')
+                if namae[i][j + 1] == ' ':
+                    lim.append(namae[i])
         return lim
     elif id == 'figure' and shop == 'XL':
         but = driver.find_elements_by_class_name("button")
@@ -86,6 +98,9 @@ def get_p(soup, id, shop):
         driver = webdriver.Firefox(executable_path=r'A:\geckodriver.exe')
         driver.get(soup)
         time.sleep(6)
+    elif shop == 'Nyaki':
+        goods = soup.findAll('div', class_='product-name')
+        t_pri = soup.findAll('div', class_='column column-cost')
     namae = []
     pri = []
     if shop == 'discomir':
@@ -113,7 +128,11 @@ def get_p(soup, id, shop):
                 ik = r[s + 3:-2]
                 dob = re.sub('\s', '', ik)
                 pri.append(dob)
-
+    elif shop == 'Nyaki':
+        for data in goods:
+            namae.append(data.text)
+        for data in t_pri:
+            pri.append(data.text[:-11])
     lim = []
     lim_pr = []
 
@@ -156,6 +175,14 @@ def get_p(soup, id, shop):
                 lim_pr.append(pri[i])
         driver.quit()
         return lim_pr
+    elif id == 'manga' and shop == 'Nyaki':
+        for i in range(len(namae)):
+            if re.findall(r'1 том+$|1 книга+$', namae[i]):
+                j = namae[i].find('1')
+                if namae[i][j + 1] == ' ':
+                    lim_pr.append(pri[i])
+        return lim_pr
+
     elif id == 'figure' and shop == 'XL':
         but = driver.find_elements_by_class_name("button")
         for e in but:
@@ -184,6 +211,7 @@ def get_p(soup, id, shop):
         return pri
 
 df = pd.read_excel('output.xlsx')
+print(df)
 df.pop('Unnamed: 0')
 namae = []
 price = []
@@ -283,5 +311,15 @@ price = []
 #         _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Manga']], columns=['name', 'price', 'shop', 'category'])
 #         df = df.append(_df, ignore_index=True)
 
-print(df)
+# Nyaki
+for i in range(1, 9):
+    url = 'https://nyaki.ru/catalog/manga/?page='+str(i)
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, "html.parser")
+    namae = namae + get_n(soup, 'manga', 'Nyaki')
+    price = price + get_p(soup, 'manga', 'Nyaki')
+for i in range(len(namae)):
+    if price[i].isdigit() == True:
+        _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+        df = df.append(_df, ignore_index=True)
 df.to_excel('output.xlsx')

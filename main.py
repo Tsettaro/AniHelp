@@ -2,16 +2,22 @@ import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
-url = "https://diskomir.ru/catalog/znachki/nabory_znachkov/?from_movie=bananovaya_ryba_banana_fish_rybka_bananka&from_movie=voleybol_haikyu_haikyuu_&from_movie=doktor_stoun_dr_stone_doctor_stone&from_movie=drakon_gornichnaya_kobayashi_kobayashi_san_chi_no_maid_dragon_miss_kobayashi_s_dragon_maid&from_movie=durochka_aho_girl_ahogaru_clueless_girl"
+import re
+a = []
+lim = []
+url = 'https://nyaki.ru/catalog/manga/?page=1'
 page = requests.get(url)
 soup = BeautifulSoup(page.text, "html.parser")
-goods = soup.findAll('a', class_='text_fader')
-for e in goods:
-    print(e.text[:-5])
-t_pri = soup.findAll('div', class_='price')
-for data in t_pri:
-    print(data.text[:-5])
-
+goods = soup.findAll('div', class_='column column-cost')
+for data in goods:
+    a.append(data.text[:-11])
+print(a)
+# for i in range(len(a)):
+#     if re.findall(r'1 том+$|1 книга+$', a[i]):
+#         j = a[i].find('1')
+#         if a[i][j+1] == ' ':
+#             lim.append(a[i])
+print(lim)
 # import itertools
 # s = "ABC"
 # com_set = itertools.combinations(s, 2)
