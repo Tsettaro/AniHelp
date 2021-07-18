@@ -213,10 +213,11 @@ def get_p(soup, id, shop):
         return pri
     elif id == 'napitki' and shop == 'Nyaki':
         return pri
+
 df = pd.read_excel('output.xlsx')
 df.pop('Unnamed: 0')
-namae = []
-price = []
+# namae = []
+# price = []
 
 # Discomir (znachki)
 # url = "https://diskomir.ru/catalog/znachki/nabory_znachkov/?from_movie=bananovaya_ryba_banana_fish_rybka_bananka&from_movie=voleybol_haikyu_haikyuu_&from_movie=doktor_stoun_dr_stone_doctor_stone&from_movie=drakon_gornichnaya_kobayashi_kobayashi_san_chi_no_maid_dragon_miss_kobayashi_s_dragon_maid&from_movie=durochka_aho_girl_ahogaru_clueless_girl"
@@ -336,20 +337,29 @@ price = []
 #         df = df.append(_df, ignore_index=True)
 
 a = []
-for i in range(307):
+for i in range(173):
     a.append(i)
 data = list(combinations(a, 3))
+print(len(data))
 a.clear()
 i = 0
 for k in range(len(data)):
     if df.iloc[data[k][0]]['category'] != df.iloc[data[k][1]]['category'] and df.iloc[data[k][0]]['category'] != df.iloc[data[k][2]]['category'] and df.iloc[data[k][1]]['category'] != df.iloc[data[k][2]]['category']:
         a.append(data[k])
-        i = i + 1
+        i+=1
         print('Now – '+str(k))
-        print('Real – '+str(i))
-print(a)
-# if df.iloc[0]['shop'] == df.iloc[1]['shop']:
-#     print('YAY')
+        print('Real – ' + str(i))
+print(len(a))
+
+# i = 0
+# res = pd.DataFrame(columns=['Комплект', 'name', 'price', 'shop', 'category'])
+# for i in range(len(a)):
+#     for j in range(len(a[i])):
+#         _df = pd.DataFrame([[i+1, df.iloc[j]['name'], df.iloc[j]['price'], df.iloc[j]['shop'], df.iloc[j]['category']]], columns=['Комплект', 'name', 'price', 'shop', 'category'])
+#         res = res.append(_df, ignore_index=True)
+#     i+=1
+#     print(i)
+# res.to_excel('result.xlsx')
 
 # i = df.iloc[0]['price']
 # i = i + 1
