@@ -89,6 +89,8 @@ def get_n(soup, id, shop):
         for i in range(len(namae)):
             namae[i] = namae[i][:-5]
         return namae
+    elif id == 'napitki' and shop == 'Nyaki':
+        return namae
 
 def get_p(soup, id, shop):
     if shop == 'discomir':
@@ -182,7 +184,6 @@ def get_p(soup, id, shop):
                 if namae[i][j + 1] == ' ':
                     lim_pr.append(pri[i])
         return lim_pr
-
     elif id == 'figure' and shop == 'XL':
         but = driver.find_elements_by_class_name("button")
         for e in but:
@@ -209,9 +210,9 @@ def get_p(soup, id, shop):
         return pri
     elif id == 'znachok' and shop == 'discomir':
         return pri
-
+    elif id == 'napitki' and shop == 'Nyaki':
+        return pri
 df = pd.read_excel('output.xlsx')
-print(df)
 df.pop('Unnamed: 0')
 namae = []
 price = []
@@ -311,15 +312,25 @@ price = []
 #         _df = pd.DataFrame([[namae[i], int(price[i]), 'XL Media', 'Manga']], columns=['name', 'price', 'shop', 'category'])
 #         df = df.append(_df, ignore_index=True)
 
-# Nyaki
-for i in range(1, 9):
-    url = 'https://nyaki.ru/catalog/manga/?page='+str(i)
-    page = requests.get(url)
-    soup = BeautifulSoup(page.text, "html.parser")
-    namae = namae + get_n(soup, 'manga', 'Nyaki')
-    price = price + get_p(soup, 'manga', 'Nyaki')
+# Nyaki (manga)
+# for i in range(1, 9):
+#     url = 'https://nyaki.ru/catalog/manga/?page='+str(i)
+#     page = requests.get(url)
+#     soup = BeautifulSoup(page.text, "html.parser")
+#     namae = namae + get_n(soup, 'manga', 'Nyaki')
+#     price = price + get_p(soup, 'manga', 'Nyaki')
+# for i in range(len(namae)):
+#     if price[i].isdigit() == True:
+#         _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+#         df = df.append(_df, ignore_index=True)
+
+url = 'https://nyaki.ru/catalog/napitki/'
+page = requests.get(url)
+soup = BeautifulSoup(page.text, "html.parser")
+namae = namae + get_n(soup, 'napitki', 'Nyaki')
+price = price + get_p(soup, 'napitki', 'Nyaki')
 for i in range(len(namae)):
     if price[i].isdigit() == True:
-        _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Manga']], columns=['name', 'price', 'shop', 'category'])
+        _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Soda']], columns=['name', 'price', 'shop', 'category'])
         df = df.append(_df, ignore_index=True)
 df.to_excel('output.xlsx')
