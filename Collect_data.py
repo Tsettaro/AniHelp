@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from itertools import combinations
 import re
 import pandas as pd
 import time
@@ -324,13 +325,33 @@ price = []
 #         _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Manga']], columns=['name', 'price', 'shop', 'category'])
 #         df = df.append(_df, ignore_index=True)
 
-url = 'https://nyaki.ru/catalog/napitki/'
-page = requests.get(url)
-soup = BeautifulSoup(page.text, "html.parser")
-namae = namae + get_n(soup, 'napitki', 'Nyaki')
-price = price + get_p(soup, 'napitki', 'Nyaki')
-for i in range(len(namae)):
-    if price[i].isdigit() == True:
-        _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Soda']], columns=['name', 'price', 'shop', 'category'])
-        df = df.append(_df, ignore_index=True)
-df.to_excel('output.xlsx')
+# url = 'https://nyaki.ru/catalog/napitki/'
+# page = requests.get(url)
+# soup = BeautifulSoup(page.text, "html.parser")
+# namae = namae + get_n(soup, 'napitki', 'Nyaki')
+# price = price + get_p(soup, 'napitki', 'Nyaki')
+# for i in range(len(namae)):
+#     if price[i].isdigit() == True:
+#         _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Soda']], columns=['name', 'price', 'shop', 'category'])
+#         df = df.append(_df, ignore_index=True)
+
+a = []
+for i in range(307):
+    a.append(i)
+data = list(combinations(a, 3))
+a.clear()
+i = 0
+for k in range(len(data)):
+    if df.iloc[data[k][0]]['category'] != df.iloc[data[k][1]]['category'] and df.iloc[data[k][0]]['category'] != df.iloc[data[k][2]]['category'] and df.iloc[data[k][1]]['category'] != df.iloc[data[k][2]]['category']:
+        a.append(data[k])
+        i = i + 1
+        print('Now – '+str(k))
+        print('Real – '+str(i))
+print(a)
+# if df.iloc[0]['shop'] == df.iloc[1]['shop']:
+#     print('YAY')
+
+# i = df.iloc[0]['price']
+# i = i + 1
+# print(i)
+# df.to_excel('output.xlsx')
