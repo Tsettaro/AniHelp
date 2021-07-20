@@ -336,29 +336,30 @@ df.pop('Unnamed: 0')
 #         _df = pd.DataFrame([[namae[i], int(price[i]), 'Nyaki', 'Soda']], columns=['name', 'price', 'shop', 'category'])
 #         df = df.append(_df, ignore_index=True)
 
-a = []
-for i in range(173):
-    a.append(i)
-data = list(combinations(a, 3))
-print(len(data))
-a.clear()
-i = 0
-for k in range(len(data)):
-    if df.iloc[data[k][0]]['category'] != df.iloc[data[k][1]]['category'] and df.iloc[data[k][0]]['category'] != df.iloc[data[k][2]]['category'] and df.iloc[data[k][1]]['category'] != df.iloc[data[k][2]]['category']:
-        a.append(data[k])
-        i+=1
-        print('Now – '+str(k))
-        print('Real – ' + str(i))
-print(len(a))
-
+# a = []
+# for i in range(168):
+#     a.append(i)
+# data = list(combinations(a, 3))
+# print(len(data))
+# a.clear()
 # i = 0
+# for k in range(len(data)):
+#     if df.iloc[data[k][0]]['category'] != df.iloc[data[k][1]]['category'] and df.iloc[data[k][0]]['category'] != df.iloc[data[k][2]]['category'] and df.iloc[data[k][1]]['category'] != df.iloc[data[k][2]]['category']:
+#         a.append(data[k])
+#         i+=1
+#         print('Now – '+str(k))
+#         print('Real – ' + str(i))
+# print(a)
+#
+# i = 0
+# k = 0
 # res = pd.DataFrame(columns=['Комплект', 'name', 'price', 'shop', 'category'])
 # for i in range(len(a)):
 #     for j in range(len(a[i])):
-#         _df = pd.DataFrame([[i+1, df.iloc[j]['name'], df.iloc[j]['price'], df.iloc[j]['shop'], df.iloc[j]['category']]], columns=['Комплект', 'name', 'price', 'shop', 'category'])
+#         _df = pd.DataFrame([[i + 1, df.at[int(a[i][j]), 'name'], df.at[int(a[i][j]), 'price'],df.at[int(a[i][j]), 'shop'], df.at[int(a[i][j]), 'category']]], columns=['Комплект', 'name', 'price', 'shop', 'category'])
 #         res = res.append(_df, ignore_index=True)
-#     i+=1
-#     print(i)
+#         k+=1
+#         print(k)
 # res.to_excel('result.xlsx')
 
 # i = df.iloc[0]['price']
